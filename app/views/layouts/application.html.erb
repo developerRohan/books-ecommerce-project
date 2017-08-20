@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Depot</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+ <body class="<%= controller.controller_name %>">
+	<div id="banner">
+	<%= image_tag("logo.png") %>
+	<%= @page_title || "Pragmatic Bookshelf" %>
+	</div>
+	<% if session[:user_id] %>
+	<div id="columns">
+	<div id="side">
+	
+	<ul>
+	<li><a href="http://www....">Home</a></li>
+	<li><a href="http://www..../faq">Questions</a></li>
+	<li><a href="http://www..../news">News</a></li>
+	<li><a href="http://www..../contact">Contact</a></li>
+	<% unless @cart.line_items.empty? %>
+	<div id="cart">
+		<%= render 'carts/line_item' , obj: @cart %>
+
+	</div>
+	<%= button_to 'Empty cart', @cart, method: :delete, data: { confirm: 'Are you sure?' } %>
+	
+	<% end %>
+	<%= button_to "check out", new_order_path , method: :get %>
+	<%= button_to "see your cart", cart_path(@cart) , method: :get %>
+
+	</ul>
+	</div>
+	<p style="color:white">{please refresh the page after adding the elemnts to see your products}</p>
+	<% end %>
+	<div id="main">
+	<%= yield %>
+	</div>
+	</div>
+	<footer>
+	<% if session[:user_id] %>
+		<%= button_to "log out" , logout_path , method: :get %>
+	<% end %>
+	</footer>
+ </body>
+</html>
